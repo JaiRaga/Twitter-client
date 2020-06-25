@@ -8,7 +8,6 @@ import {
   Button
 } from "@material-ui/core";
 import TwitterIcon from "@material-ui/icons/Twitter";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PersonIcon from "@material-ui/icons/Person";
 
