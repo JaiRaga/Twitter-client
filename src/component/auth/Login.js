@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   makeStyles,
   Grid,
@@ -13,14 +13,26 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: "25ch"
     }
+  },
+  loginContainer: {
+    marginTop: "20px"
   }
 }));
 
 const Login = () => {
   const classes = useStyles();
+  const [loginState, setLoginState] = useState({
+    email: "",
+    password: "",
+    errors: {}
+  });
+
+  console.log(loginState);
+
   return (
     <Grid container justify='center' alignItems='center'>
       <Grid
+        className={classes.loginContainer}
         container
         item
         xs={6}
@@ -38,11 +50,7 @@ const Login = () => {
           alignItems='center'>
           <form className={classes.root}>
             <Grid item>
-              <TextField
-                id='outlined-basic'
-                label='handle'
-                variant='outlined'
-              />
+              <TextField id='outlined-basic' label='email' variant='outlined' />
             </Grid>
             <Grid item>
               <TextField
@@ -51,19 +59,12 @@ const Login = () => {
                 variant='outlined'
               />
             </Grid>
-            <Grid item>
-              <TextField
-                id='outlined-basic'
-                label='re-enter password'
-                variant='outlined'
-              />
-            </Grid>
           </form>
-          <Grid item>
-            <Button color='primary' variant='contained'>
-              Let's Get Started
-            </Button>
-          </Grid>
+        </Grid>
+        <Grid item>
+          <Button color='primary' variant='contained'>
+            Let's Get Started
+          </Button>
         </Grid>
       </Grid>
     </Grid>
