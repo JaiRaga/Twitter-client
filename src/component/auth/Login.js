@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   makeStyles,
   Grid,
@@ -6,6 +7,8 @@ import {
   Button,
   Typography
 } from "@material-ui/core";
+import { Link, Redirect } from "react-router-dom";
+import { login } from "../../Redux/actions/auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,11 +24,31 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+
   const [loginState, setLoginState] = useState({
     email: "",
-    password: "",
-    errors: {}
+    password: ""
   });
+
+  const { email, password } = loginState;
+
+  const onChange = (e) => {
+    console.log(e.target);
+    setLoginState({ ...loginState, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(login(email, password));
+  };
+
+  if (isAuthenticated) {
+    return <Redirect to='/landing' />;
+  }
 
   console.log(loginState);
 
@@ -48,23 +71,41 @@ const Login = () => {
           display='column'
           justify='center'
           alignItems='center'>
-          <form className={classes.root}>
+          <form className={classes.root} onSubmit={onSubmit}>
             <Grid item>
-              <TextField id='outlined-basic' label='email' variant='outlined' />
+              <TextField
+                id='email'
+                name='email'
+                label='email'
+                variant='outlined'
+                onChange={onChange}
+              />
             </Grid>
             <Grid item>
               <TextField
-                id='outlined-basic'
+                id='password'
+                name='password'
                 label='password'
                 variant='outlined'
+                type='password'
+                onChange={onChange}
               />
             </Grid>
           </form>
         </Grid>
         <Grid item>
-          <Button color='primary' variant='contained'>
+          <Button
+            type='submit'
+            color='primary'
+            variant='contained'
+            onSubmit={onSubmit}>
             Let's Get Started
           </Button>
+        </Grid>
+        <Grid item>
+          <Typography variant='subtitle2' className={classes.loginContainer}>
+            Don't have an account? <Link to='/register'>Sign Up</Link>
+          </Typography>
         </Grid>
       </Grid>
     </Grid>
