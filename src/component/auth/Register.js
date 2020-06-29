@@ -6,6 +6,7 @@ import {
   Button,
   Typography
 } from "@material-ui/core";
+import { Link, Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,6 +79,11 @@ const Login = () => {
           <Button color='primary' variant='contained'>
             Let's Get Started
           </Button>
+        </Grid>
+        <Grid item>
+          <Typography variant='subtitle2' className={classes.registerContainer}>
+            Don't have an account? <Link to='/login'>Sign Up</Link>
+          </Typography>
         </Grid>
       </Grid>
     </Grid>
