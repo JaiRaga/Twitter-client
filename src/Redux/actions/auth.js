@@ -18,8 +18,8 @@ export const loadUser = () => async (dispatch) => {
   }
 
   try {
-    const res = await axios.get("/user/me");
-    console.log(res);
+    const res = await axios.get("/api/user/me");
+
     dispatch({
       type: USER_LOADED,
       payload: res.data
@@ -30,7 +30,7 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Register User
-export const registerUser = ({ name, handle, email, password }) => async (
+export const registerUser = ({ username, handle, email, password }) => async (
   dispatch
 ) => {
   const config = {
@@ -39,12 +39,13 @@ export const registerUser = ({ name, handle, email, password }) => async (
     }
   };
 
-  const body = JSON.stringify({ name, handle, email, password });
+  const body = JSON.stringify({ username, handle, email, password });
 
   try {
     const res = await axios.post("/api/register", body, config);
     console.log(res);
     dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+    dispatch(loadUser());
   } catch (err) {
     dispatch({ REGISTER_FAIL });
   }
@@ -64,6 +65,7 @@ export const login = (email, password) => async (dispatch) => {
     const res = await axios.post("/api/login", body, config);
     console.log(res);
     dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+    dispatch(loadUser());
   } catch (err) {
     dispatch({ type: LOGIN_FAIL });
   }
