@@ -10,6 +10,7 @@ import Register from "./component/auth/Register";
 import ProfileContainer from "./component/profile/ProfileContainer";
 import Dashboard from "./component/dashboard/Dashboard";
 import Profiles from "./component/Profiles/Profiles";
+import Profile from "./component/profile/Profile";
 
 // Redux
 import store from "./Redux/store";
@@ -37,6 +38,10 @@ function App() {
           <Switch>
             <Route exact path='/register' component={Register} />
             <Route exact path='/Login' component={Login} />
+            <Route exact path='/profile' component={ProfileContainer} />
+            <Route exact path='/profile/:id' component={Profile} />
+            <Route exact path='/profiles' component={Profiles} />
+            <Route exact path='/dashboard' component={Dashboard} />
           </Switch>
         </Fragment>
       </Router>
