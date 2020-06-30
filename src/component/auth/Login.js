@@ -36,7 +36,6 @@ const Login = () => {
   const { email, password } = loginState;
 
   const onChange = (e) => {
-    console.log(e.target);
     setLoginState({ ...loginState, [e.target.name]: e.target.value });
   };
 
@@ -49,8 +48,6 @@ const Login = () => {
   if (isAuthenticated) {
     return <Redirect to='/landing' />;
   }
-
-  console.log(loginState);
 
   return (
     <Grid container justify='center' alignItems='center'>
@@ -98,7 +95,7 @@ const Login = () => {
             type='submit'
             color='primary'
             variant='contained'
-            onSubmit={onSubmit}>
+            onClick={onSubmit}>
             Let's Get Started
           </Button>
         </Grid>
