@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   makeStyles,
   Grid,
@@ -7,6 +7,8 @@ import {
   Typography
 } from "@material-ui/core";
 import { Link, Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { registerUser } from "../../Redux/actions/auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +24,37 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+
+  const [registerState, setRegisterState] = useState({
+    username: "",
+    email: "",
+    password: "",
+    password2: "",
+    handle: ""
+  });
+
+  const { handle, username, email, password, password2 } = registerState;
+
+  const onChange = (e) =>
+    setRegisterState({ ...registerState, [e.target.name]: e.target.value });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    if (password !== password2) {
+      console.log("Password do not match");
+    } else {
+      dispatch(registerUser({ username, email, handle, password }));
+    }
+  };
+
+  if (isAuthenticated) {
+    return <Redirect to='/landing' />;
+  }
+
   return (
     <Grid container justify='center' alignItems='center'>
       <Grid
@@ -44,39 +77,57 @@ const Login = () => {
           <form className={classes.root}>
             <Grid item>
               <TextField
-                id='outlined-basic'
+                id='username'
+                name='username'
                 label='Username'
                 variant='outlined'
+                onChange={onChange}
               />
             </Grid>
             <Grid item>
-              <TextField id='outlined-basic' label='Email' variant='outlined' />
+              <TextField
+                id='email'
+                name='email'
+                label='Email'
+                variant='outlined'
+                onChange={onChange}
+              />
             </Grid>
             <Grid item>
               <TextField
-                id='outlined-basic'
+                id='handle'
+                name='handle'
                 label='handle'
                 variant='outlined'
+                onChange={onChange}
               />
             </Grid>
             <Grid item>
               <TextField
-                id='outlined-basic'
+                id='password'
+                name='password'
                 label='password'
                 variant='outlined'
+                onChange={onChange}
               />
             </Grid>
             <Grid item>
               <TextField
-                id='outlined-basic'
+                id='password2'
+                name='password2'
                 label='re-enter password'
                 variant='outlined'
+                onChange={onChange}
               />
             </Grid>
           </form>
         </Grid>
         <Grid item>
-          <Button color='primary' variant='contained'>
+          <Button
+            color='primary'
+            variant='contained'
+            type='submit'
+            onClick={onSubmit}>
             Let's Get Started
           </Button>
         </Grid>
