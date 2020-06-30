@@ -11,6 +11,8 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import CommentIcon from "@material-ui/icons/Comment";
+import { useSelector } from "react-redux";
+import { RingLoader } from "react-spinners";
 import profilePic from "../../img/raga.jpg";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,59 +43,76 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     maringTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    width: "100%",
+    maxWidth: "100%",
+    padding: 25
   }
 }));
 
 const TweetItem = () => {
   const classes = useStyles();
+  const loading = useSelector((state) => state.auth.loading);
+  const user = useSelector((state) => state.auth.user);
   return (
     <Fragment>
       <Paper elevation={3} className={classes.paper}>
-        <Grid container item>
-          <Grid item className={classes.root}>
-            <Avatar alt='username' src={profilePic} className={classes.large} />
-            <Grid container item direction='column'>
-              <Grid item>username handle dateOfTweet</Grid>
-              <Grid item>
-                Tweet Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Magni tempora hic facilis quis ullam! Necessitatibus, nam minus.
-                Natus sint consequatur doloribus. Provident aliquam
-                reprehenderit fugit vero nulla enim nobis delectus hic itaque
-                eum laudantium, consequuntur, accusantium porro fugiat natus
-                rerum quas veritatis deserunt molestias. Ab explicabo hic
-                obcaecati illo magni illum minus, ad beatae odit eligendi
-                perferendis fugit pariatur laborum atque reprehenderit esse
-                ducimus nihil, excepturi unde ut cumque doloremque. Quibusdam
-                iste quam itaque dolorem quae, quasi molestiae reprehenderit
-                laboriosam. Laudantium expedita fuga veniam et similique unde
-                voluptas incidunt voluptates culpa iusto. Numquam quas
-                voluptates, aspernatur sequi dolorem quidem quam.
-              </Grid>
-              <Grid
-                container
-                item
-                justify='space-between'
-                className={classes.likeShareContainer}>
+        {loading || user === null ? (
+          <Grid
+            container
+            direction='column'
+            justify='center'
+            alignItems='center'
+            item
+            className={classes.loadingSpinner}>
+            <RingLoader loading color='#6A07EE' size={25} />
+          </Grid>
+        ) : (
+          <Grid container item>
+            <Grid item className={classes.root}>
+              <Avatar
+                alt={user.username}
+                src={profilePic}
+                className={classes.large}
+              />
+              <Grid container item direction='column'>
                 <Grid item>
-                  <IconButton aria-label='like' className={classes.like}>
-                    <FavoriteBorderIcon />
-                  </IconButton>
+                  {user.username} {user.handle} {user.createdAt}
                 </Grid>
                 <Grid item>
-                  <IconButton aria-label='retweet' className={classes.retweet}>
-                    <RepeatIcon />
-                  </IconButton>
+                  Tweet Lorem, ipsum dolor sit amet consectetur adipisicing
+                  elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Repudiandae, cumque.
                 </Grid>
-                <Grid item>
-                  <IconButton aria-label='comment' className={classes.comment}>
-                    <CommentIcon />
-                  </IconButton>
+                <Grid
+                  container
+                  item
+                  justify='space-between'
+                  className={classes.likeShareContainer}>
+                  <Grid item>
+                    <IconButton aria-label='like' className={classes.like}>
+                      <FavoriteBorderIcon />
+                    </IconButton>
+                  </Grid>
+                  <Grid item>
+                    <IconButton
+                      aria-label='retweet'
+                      className={classes.retweet}>
+                      <RepeatIcon />
+                    </IconButton>
+                  </Grid>
+                  <Grid item>
+                    <IconButton
+                      aria-label='comment'
+                      className={classes.comment}>
+                      <CommentIcon />
+                    </IconButton>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        )}
       </Paper>
     </Fragment>
   );
