@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { Grid } from "@material-ui/core";
+
 import Profile from "./Profile";
 import Tweets from "../tweets/Tweets";
 
@@ -20,7 +21,10 @@ const ProfileContainer = () => {
       <Grid
         container
         item
+        xs={12}
         sm={8}
+        md={10}
+        lg={5}
         direction='column'
         justify='center'
         alignItems='center'
