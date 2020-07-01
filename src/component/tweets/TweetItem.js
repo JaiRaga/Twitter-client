@@ -5,11 +5,11 @@ import {
   Avatar,
   IconButton,
   Divider,
-  Paper
+  Paper,
+  Typography
 } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import RepeatIcon from "@material-ui/icons/Repeat";
-import ShuffleIcon from "@material-ui/icons/Shuffle";
 import CommentIcon from "@material-ui/icons/Comment";
 import { useSelector } from "react-redux";
 import { RingLoader } from "react-spinners";
@@ -47,6 +47,12 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: "100%",
     padding: 25
+  },
+  tweet: {
+    marginTop: 10
+  },
+  marginTop: {
+    marginTop: 2
   }
 }));
 
@@ -76,13 +82,20 @@ const TweetItem = () => {
                 className={classes.large}
               />
               <Grid container item direction='column'>
-                <Grid item>
-                  {user.username} {user.handle} {user.createdAt}
+                <Grid container item spacing={1}>
+                  <Grid item>
+                    <Typography variant='h5'>{user.username}</Typography>
+                  </Grid>
+                  <Grid item className={classes.marginTop}>
+                    <Typography variant='caption'>@{user.handle}</Typography>
+                  </Grid>
+                  <Grid item className={classes.marginTop}>
+                    <Typography variant='caption'>{user.createdAt}</Typography>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  Tweet Lorem, ipsum dolor sit amet consectetur adipisicing
-                  elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Repudiandae, cumque.
+                <Divider />
+                <Grid item className={classes.tweet}>
+                  Hello! I'm here !
                 </Grid>
                 <Grid
                   container
