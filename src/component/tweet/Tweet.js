@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
   margin: {
     marginBottom: 10
+  },
+  textField: {
+    width: "100%",
+    maxWidth: "100%"
   }
 }));
 
@@ -34,10 +38,11 @@ const Tweet = () => {
         <Grid container item>
           <Grid item className={classes.root}>
             <Avatar alt='username' src={profilePic} className={classes.large} />
-            <Grid container item spacing={4}>
-              <Grid item>
+            <Grid container item spacing={8}>
+              <Grid item className={classes.textField}>
                 <form>
                   <TextField
+                    fullWidth
                     id='post-tweet'
                     label="What's happening?"></TextField>
                 </form>
