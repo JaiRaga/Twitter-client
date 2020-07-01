@@ -1,24 +1,42 @@
-import React from "react";
-import { Grid, Avatar, Paper, Button } from "@material-ui/core";
+import React, { Fragment } from "react";
+import { Grid, Avatar, Paper, Button, makeStyles } from "@material-ui/core";
+
+import { SyncLoader } from "react-spinners";
 import profilePic from "../../img/raga.jpg";
 
-const ProfileItem = () => {
-  return (
-    // <Paper variant='outlined' elevation={3}>
-    <Grid container item sm={8} spacing={2}>
-      <Grid container item>
-        <Grid item>
-          <Avatar alt='username' src={profilePic} />
-        </Grid>
-        <Grid item>
-          <Grid item>username</Grid>
-          <Grid item>handle</Grid>
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    "& > *": {
+      margin: theme.spacing(1)
+    }
+  },
+  spaceLeft: {
+    marginLeft: 15
+  }
+}));
 
-          <Grid item></Grid>
+const ProfileItem = ({ user }) => {
+  const classes = useStyles();
+
+  return (
+    <Fragment>
+      <Grid item className={classes.root}>
+        <Avatar alt='username' src={profilePic} />
+        <Grid container item direction='column'>
+          <Grid item>{user.username}</Grid>
+          <Grid item>{user.handle}</Grid>
+
+          <Grid item>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste,
+            laudantium facilis repudiandae optio non sit?
+          </Grid>
+        </Grid>
+        <Grid item className={classes.spaceLeft}>
+          <Button color='primary'>Follow</Button>
         </Grid>
       </Grid>
-    </Grid>
-    // </Paper>
+    </Fragment>
   );
 };
 
