@@ -1,62 +1,139 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   makeStyles,
   AppBar,
   Toolbar,
   IconButton,
   Typography,
-  Button
+  Button,
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText
 } from "@material-ui/core";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PersonIcon from "@material-ui/icons/Person";
+import HomeIcon from "@material-ui/icons/Home";
+import PersonPinIcon from "@material-ui/icons/PersonPin";
+import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import { Link, Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Drawer from "./Drawer";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
+  navbar: {
+    backgroundColor: "#1a0285",
+    [theme.breakpoints.down("md")]: {
+      display: "none"
+    },
+    [theme.breakpoints.up("md")]: {
+      display: "flex"
+    }
   },
-  menuButton: {
-    marginRight: theme.spacing(2)
+  list: {
+    display: "flex"
   },
-  icon: {
-    marginRight: theme.spacing(1)
+  link: {
+    textDecoration: "none",
+    color: "white"
   },
-  title: {
-    flexGrow: 1
+  icons: {
+    color: "white",
+    minWidth: "35px"
   },
-  //   twitterIcon: {
-  //     color: "white"
-  //   },
-  navbarColor: {
-    backgroundColor: "#1a0285"
+  right: {
+    display: "flex",
+    marginLeft: "auto"
   }
 }));
 
 const Navbar = () => {
   const classes = useStyles();
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+
+  const authLinks = (
+    <Fragment>
+      <List className={classes.list}>
+        <Link to='/dashboard' className={classes.link}>
+          <ListItem button>
+            <ListItemIcon className={classes.icons}>
+              <TwitterIcon />
+            </ListItemIcon>
+            <ListItemText primary='Twitter' />
+          </ListItem>
+        </Link>
+      </List>
+      <List className={classes.right}>
+        <Link to='/dashboard' className={classes.link}>
+          <ListItem button>
+            <ListItemIcon className={classes.icons}>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary='Home' />
+          </ListItem>
+        </Link>
+
+        <Link to='/profile' className={classes.link}>
+          <ListItem button>
+            <ListItemIcon className={classes.icons}>
+              <PersonPinIcon />
+            </ListItemIcon>
+            <ListItemText primary='Profile' />
+          </ListItem>
+        </Link>
+
+        <Link to='/logout' className={classes.link}>
+          <ListItem button>
+            <ListItemIcon className={classes.icons}>
+              <DirectionsRunIcon />
+            </ListItemIcon>
+            <ListItemText primary='Logout' />
+          </ListItem>
+        </Link>
+      </List>
+    </Fragment>
+  );
+
+  const guestLinks = (
+    <Fragment>
+      <List className={classes.list}>
+        <Link to='/dashboard' className={classes.link}>
+          <ListItem button>
+            <ListItemIcon className={classes.icons}>
+              <TwitterIcon />
+            </ListItemIcon>
+            <ListItemText primary='Twitter' />
+          </ListItem>
+        </Link>
+      </List>
+      <List className={classes.right}>
+        <Link to='/login' className={classes.link}>
+          <ListItem button>
+            <ListItemIcon className={classes.icons}>
+              <PersonIcon />
+            </ListItemIcon>
+            <ListItemText primary='Login' />
+          </ListItem>
+        </Link>
+
+        <Link to='/register' className={classes.link}>
+          <ListItem button>
+            <ListItemIcon className={classes.icons}>
+              <PersonAddIcon />
+            </ListItemIcon>
+            <ListItemText primary='Register' />
+          </ListItem>
+        </Link>
+      </List>
+    </Fragment>
+  );
+
   return (
-    <div className={classes.root}>
-      <AppBar position='static' className={classes.navbarColor}>
-        <Toolbar>
-          <IconButton
-            edge='start'
-            className={classes.menuButton}
-            color='inherit'
-            aria-label='twitter icon'>
-            <TwitterIcon />
-          </IconButton>
-          <Typography variant='h6' className={classes.title}>
-            Twitter
-          </Typography>
-          <Button color='inherit'>
-            <PersonIcon className={classes.icon} /> Login
-          </Button>
-          <Button color='inherit'>
-            <PersonAddIcon className={classes.icon} /> Register
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </div>
+    <AppBar position='static' className={classes.navbar}>
+      <Toolbar>{isAuthenticated && !loading ? authLinks : guestLinks}</Toolbar>
+    </AppBar>
   );
 };
 
