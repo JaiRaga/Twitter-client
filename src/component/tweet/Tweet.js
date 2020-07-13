@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import {
   Grid,
   makeStyles,
@@ -7,8 +7,10 @@ import {
   Button,
   Paper
 } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 import profilePic from "../../img/raga.jpg";
 import PostTweetButton from "./PostTweetButton";
+import { postTweet } from "../../Redux/actions/tweet";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,8 +20,9 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   large: {
-    width: theme.spacing(7),
-    height: theme.spacing(7)
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    marginTop: "40px"
   },
   margin: {
     marginBottom: 10
@@ -32,6 +35,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Tweet = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [tweet, setTweet] = useState("");
+
+  const onChange = (e) => {
+    setTweet(e.target.value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    dispatch(postTweet(tweet));
+  };
+
   return (
     <Fragment>
       <Paper elevation={3} className={classes.margin}>
@@ -43,12 +59,14 @@ const Tweet = () => {
                 <form>
                   <TextField
                     fullWidth
-                    id='post-tweet'
-                    label="What's happening?"></TextField>
+                    name='tweet'
+                    id='tweet'
+                    label="What's happening?"
+                    onChange={onChange}></TextField>
                 </form>
               </Grid>
               <Grid container item>
-                <PostTweetButton />
+                <PostTweetButton submitHandler={submitHandler} />
               </Grid>
             </Grid>
           </Grid>
