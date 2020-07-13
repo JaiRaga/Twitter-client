@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(20)
   },
   back: {
-    background: "#FF8700",
+    background: "#556cd6",
     padding: 10
   },
   centerText: {
