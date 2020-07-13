@@ -1,8 +1,9 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Grid } from "@material-ui/core";
-
+import { useDispatch } from "react-redux";
 import Profile from "./Profile";
-import Tweets from "../tweets/Tweets";
+import UserTweets from "../tweets/UserTweets";
+import { CLEAR_TWEETS } from "../../Redux/actions/types";
 
 const style = (theme) => ({
   Grid: {
@@ -11,6 +12,8 @@ const style = (theme) => ({
 });
 
 const ProfileContainer = () => {
+  const dispatch = useDispatch();
+  dispatch({ type: CLEAR_TWEETS });
   return (
     <Grid
       container
@@ -23,14 +26,13 @@ const ProfileContainer = () => {
         item
         xs={12}
         sm={8}
-        md={10}
-        lg={5}
+        md={5}
         direction='column'
         justify='center'
         alignItems='center'
         spacing={4}>
         <Profile />
-        <Tweets />
+        <UserTweets />
       </Grid>
     </Grid>
   );
