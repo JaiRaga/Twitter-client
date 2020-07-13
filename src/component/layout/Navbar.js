@@ -19,12 +19,11 @@ import HomeIcon from "@material-ui/icons/Home";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
 import { Link, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Drawer from "./Drawer";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../Redux/actions/auth";
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
-    backgroundColor: "#1a0285",
     [theme.breakpoints.down("md")]: {
       display: "none"
     },
@@ -52,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = () => {
   const classes = useStyles();
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const authLinks = (
     <Fragment>
@@ -84,8 +84,8 @@ const Navbar = () => {
           </ListItem>
         </Link>
 
-        <Link to='/logout' className={classes.link}>
-          <ListItem button>
+        <Link to='/landing' className={classes.link}>
+          <ListItem button onClick={() => dispatch(logout())}>
             <ListItemIcon className={classes.icons}>
               <DirectionsRunIcon />
             </ListItemIcon>
