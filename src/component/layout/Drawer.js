@@ -109,7 +109,7 @@ export default function SwipeableTemporaryDrawer() {
           </ListItem>
         </Link>
 
-        <Link to='/logout' className={classes.link}>
+        <Link to='/landing' className={classes.link}>
           <ListItem button onClick={() => dispatch(logout())}>
             <ListItemIcon className={classes.icons}>
               <DirectionsRunIcon />
