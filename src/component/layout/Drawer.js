@@ -37,10 +37,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20
   },
   link: {
-    textDecoration: "none"
+    textDecoration: "none",
+    color: "#1976d2"
   },
   icons: {
-    color: "gray",
+    color: "#1976d2",
     minWidth: "35px",
     paddingRight: 20
   },
