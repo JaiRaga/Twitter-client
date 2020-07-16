@@ -46,6 +46,7 @@ const Tweet = () => {
     e.preventDefault();
 
     dispatch(postTweet(tweet));
+    setTweet("");
   };
 
   return (
@@ -62,6 +63,7 @@ const Tweet = () => {
                     name='tweet'
                     id='tweet'
                     label="What's happening?"
+                    value={tweet}
                     onChange={onChange}></TextField>
                 </form>
               </Grid>
