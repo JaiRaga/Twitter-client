@@ -2,12 +2,12 @@ import React from "react";
 import { Grid, Divider } from "@material-ui/core";
 import TweetItem from "./TweetItem";
 
-const Tweets = () => {
+const Tweets = ({ tweets }) => {
   return (
     <Grid container item>
-      <TweetItem />
-      <TweetItem />
-      <TweetItem />
+      {tweets.map((tweet) => (
+        <TweetItem key={tweet._id} tweet={tweet} />
+      ))}
     </Grid>
   );
 };
