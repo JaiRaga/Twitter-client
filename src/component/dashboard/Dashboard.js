@@ -23,7 +23,7 @@ const Dashboard = () => {
     dispatch(getAllTweets());
   }, [tweets]);
 
-  console.log(tweet);
+  // console.log(tweet);
 
   return (
     <Grid container justify='center' alignItems='center' style={style.Margin}>
