@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Grid,
   makeStyles,
@@ -8,19 +8,27 @@ import {
   Paper,
   Typography
 } from "@material-ui/core";
+import moment from "moment-twitter";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import RepeatIcon from "@material-ui/icons/Repeat";
+import RepeatOneIcon from "@material-ui/icons/RepeatOne";
 import CommentIcon from "@material-ui/icons/Comment";
-import { useSelector } from "react-redux";
+import AddCommentIcon from "@material-ui/icons/AddComment";
+import { useSelector, useDispatch } from "react-redux";
 import { RingLoader } from "react-spinners";
 import profilePic from "../../img/raga.jpg";
+import { getUserById } from "../../Redux/actions/profile";
+import Comment from "../comments/Comment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     "& > *": {
       margin: theme.spacing(1)
-    }
+    },
+    width: "100%",
+    maxWidth: "100%"
   },
   large: {
     width: theme.spacing(7),
@@ -31,15 +39,21 @@ const useStyles = makeStyles((theme) => ({
   },
   likeShareContainer: {
     marginTop: 10
+    // maxWidth: "100%",
   },
   like: {
-    color: "#fa1616"
+    color: "#fa1616",
+    backgroundColor: "#fa161619"
   },
   retweet: {
-    color: "#01a9b4"
+    // color: "#01a9b4",
+    // backgroundColor: "#01a9b411"
+    color: "#1976d2",
+    backgroundColor: "#1976d211"
   },
   comment: {
-    color: "#12cad6"
+    color: "#12cad6",
+    backgroundColor: "#12cad619"
   },
   paper: {
     maringTop: 10,
@@ -56,10 +70,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TweetItem = () => {
+const TweetItem = ({ tweet }) => {
   const classes = useStyles();
-  const loading = useSelector((state) => state.auth.loading);
-  const user = useSelector((state) => state.auth.user);
+  const loading = useSelector((state) => state.tweet.loading);
+  const user = tweet.owner;
+
+  const [liked, setLiked] = useState(false);
+  const [retweet, setRetweet] = useState(false);
+  const [comment, setComment] = useState(false);
+
+  // console.log(tweet, user);
+  let date = new Date() - new Date(Date.parse(tweet.createdAt));
+  console.log();
+  // console.log(new Date(Date.parse(tweet.createdAt)));
   return (
     <Fragment>
       <Paper elevation={3} className={classes.paper}>
@@ -90,12 +113,16 @@ const TweetItem = () => {
                     <Typography variant='caption'>@{user.handle}</Typography>
                   </Grid>
                   <Grid item className={classes.marginTop}>
-                    <Typography variant='caption'>{user.createdAt}</Typography>
+                    <Typography variant='caption'>
+                      {moment(
+                        moment() + 36e5 * new Date(tweet.createdAt).getHours()
+                      ).twitterLong()}
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Divider />
                 <Grid item className={classes.tweet}>
-                  Hello! I'm here !
+                  {tweet.text}
                 </Grid>
                 <Grid
                   container
@@ -103,22 +130,27 @@ const TweetItem = () => {
                   justify='space-between'
                   className={classes.likeShareContainer}>
                   <Grid item>
-                    <IconButton aria-label='like' className={classes.like}>
-                      <FavoriteBorderIcon />
+                    <IconButton
+                      aria-label='like'
+                      className={classes.like}
+                      onClick={() => setLiked((prevState) => !prevState)}>
+                      {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                     </IconButton>
                   </Grid>
                   <Grid item>
                     <IconButton
                       aria-label='retweet'
-                      className={classes.retweet}>
-                      <RepeatIcon />
+                      className={classes.retweet}
+                      onClick={() => setRetweet((prevState) => !prevState)}>
+                      {retweet ? <RepeatOneIcon /> : <RepeatIcon />}
                     </IconButton>
                   </Grid>
                   <Grid item>
                     <IconButton
                       aria-label='comment'
-                      className={classes.comment}>
-                      <CommentIcon />
+                      className={classes.comment}
+                      onClick={() => setComment((prevState) => !prevState)}>
+                      {comment ? <CommentIcon /> : <AddCommentIcon />}
                     </IconButton>
                   </Grid>
                 </Grid>
@@ -127,6 +159,7 @@ const TweetItem = () => {
           </Grid>
         )}
       </Paper>
+      <Comment />
     </Fragment>
   );
 };
