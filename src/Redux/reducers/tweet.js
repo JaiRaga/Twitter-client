@@ -3,7 +3,10 @@ import {
   GET_TWEETS_BY_ME,
   GET_TWEETS_BY_USER,
   CLEAR_TWEET,
-  CLEAR_TWEETS
+  CLEAR_TWEETS,
+  POST_TWEET,
+  DELETE_TWEET,
+  UPDATE_LIKES
 } from "../actions/types";
 
 const initialState = {
@@ -23,6 +26,20 @@ export default (state = initialState, action) => {
         loading: false
       };
 
+    case POST_TWEET:
+      return {
+        ...state,
+        tweets: [payload, ...state.tweets],
+        loading: false
+      };
+
+    case DELETE_TWEET:
+      return {
+        ...state,
+        tweets: state.tweets.filter((tweet) => tweet._id !== payload),
+        loading: false
+      };
+
     case CLEAR_TWEET:
       return {
         ...state,
@@ -34,6 +51,17 @@ export default (state = initialState, action) => {
       return {
         ...state,
         tweets: [],
+        loading: false
+      };
+
+    case UPDATE_LIKES:
+      return {
+        ...state,
+        tweets: state.tweets.map((tweet) =>
+          tweet._id === payload.tweetId
+            ? { ...tweet, likes: [payload.likes] }
+            : tweet
+        ),
         loading: false
       };
 
