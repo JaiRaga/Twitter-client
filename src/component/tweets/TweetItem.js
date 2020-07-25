@@ -6,7 +6,8 @@ import {
   IconButton,
   Divider,
   Paper,
-  Typography
+  Typography,
+  Tooltip
 } from "@material-ui/core";
 import moment from "moment-twitter";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -15,10 +16,12 @@ import RepeatIcon from "@material-ui/icons/Repeat";
 import RepeatOneIcon from "@material-ui/icons/RepeatOne";
 import CommentIcon from "@material-ui/icons/Comment";
 import AddCommentIcon from "@material-ui/icons/AddComment";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useSelector, useDispatch } from "react-redux";
 import { RingLoader } from "react-spinners";
 import profilePic from "../../img/raga.jpg";
 import { getUserById } from "../../Redux/actions/profile";
+import { addLike } from "../../Redux/actions/tweet";
 import Comment from "../comments/Comment";
 
 const useStyles = makeStyles((theme) => ({
@@ -67,22 +70,42 @@ const useStyles = makeStyles((theme) => ({
   },
   marginTop: {
     marginTop: 2
+  },
+  expand: {
+    marginLeft: "auto",
+    marginBottom: 20
   }
 }));
 
 const TweetItem = ({ tweet }) => {
   const classes = useStyles();
   const loading = useSelector((state) => state.tweet.loading);
+  const authUser = useSelector((state) => state.auth.user);
   const user = tweet.owner;
 
   const [liked, setLiked] = useState(false);
   const [retweet, setRetweet] = useState(false);
   const [comment, setComment] = useState(false);
+  const [title, setTitle] = useState("Edit");
 
-  // console.log(tweet, user);
-  let date = new Date() - new Date(Date.parse(tweet.createdAt));
-  console.log();
-  // console.log(new Date(Date.parse(tweet.createdAt)));
+  const dispatch = useDispatch();
+  // if (liked) dispatch(addLike(tweet._id));
+  const setLike = (id) => {
+    // setLiked((prevState) => !prevState)
+    console.log(id, typeof id);
+    console.log(
+      tweet.likes.map((like) => like._id.toString() === id.toString())
+    );
+    console.log(tweet.likes.map((like) => like._id === id));
+    if (
+      tweet.likes.map((like) => like._id.toString() === id.toString())
+        .length === 0
+    ) {
+      setLiked(true);
+      dispatch(addLike(id));
+    }
+  };
+
   return (
     <Fragment>
       <Paper elevation={3} className={classes.paper}>
@@ -119,6 +142,13 @@ const TweetItem = ({ tweet }) => {
                       ).twitterLong()}
                     </Typography>
                   </Grid>
+                  <Grid item className={classes.expand}>
+                    <Tooltip title={title}>
+                      <IconButton aria-label='expand-more'>
+                        <ExpandMoreIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
                 </Grid>
                 <Divider />
                 <Grid item className={classes.tweet}>
@@ -130,10 +160,11 @@ const TweetItem = ({ tweet }) => {
                   justify='space-between'
                   className={classes.likeShareContainer}>
                   <Grid item>
+                    {tweet.likes.length > 0 ? tweet.likes.length : null}
                     <IconButton
                       aria-label='like'
                       className={classes.like}
-                      onClick={() => setLiked((prevState) => !prevState)}>
+                      onClick={() => setLike(tweet._id)}>
                       {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                     </IconButton>
                   </Grid>
