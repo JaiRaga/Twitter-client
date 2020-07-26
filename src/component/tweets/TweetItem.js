@@ -21,7 +21,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { RingLoader } from "react-spinners";
 import profilePic from "../../img/raga.jpg";
 import { getUserById } from "../../Redux/actions/profile";
-import { addLike } from "../../Redux/actions/tweet";
+import {
+  addLike,
+  removeLike,
+  reTweet,
+  deTweet
+} from "../../Redux/actions/tweet";
 import Comment from "../comments/Comment";
 
 const useStyles = makeStyles((theme) => ({
@@ -83,26 +88,34 @@ const TweetItem = ({ tweet }) => {
   const authUser = useSelector((state) => state.auth.user);
   const user = tweet.owner;
 
-  const [liked, setLiked] = useState(false);
-  const [retweet, setRetweet] = useState(false);
+  const [liked, setLiked] = useState(!!tweet.likes.length);
+  const [retweet, setRetweet] = useState(!!tweet.retweets.length);
   const [comment, setComment] = useState(false);
   const [title, setTitle] = useState("Edit");
 
   const dispatch = useDispatch();
-  // if (liked) dispatch(addLike(tweet._id));
+
   const setLike = (id) => {
-    // setLiked((prevState) => !prevState)
-    console.log(id, typeof id);
-    console.log(
-      tweet.likes.map((like) => like._id.toString() === id.toString())
-    );
-    console.log(tweet.likes.map((like) => like._id === id));
-    if (
-      tweet.likes.map((like) => like._id.toString() === id.toString())
-        .length === 0
-    ) {
+    let likes = tweet.likes.map((like) => like._id === id);
+    console.log(tweet.likes.map((like) => like._id === id, likes));
+    if (likes.length === 0 && !liked) {
       setLiked(true);
       dispatch(addLike(id));
+    } else if (liked && likes.length > 0) {
+      setLiked(false);
+      dispatch(removeLike(id));
+    }
+  };
+
+  const share = (id) => {
+    let retweets = tweet.retweets.map((retweet) => retweet._id === id);
+    console.log(retweets);
+    if (retweets.length === 0 && !retweet) {
+      setRetweet(true);
+      dispatch(reTweet(id));
+    } else if (retweet && retweets.length > 0) {
+      setRetweet(false);
+      dispatch(deTweet(id));
     }
   };
 
@@ -160,21 +173,30 @@ const TweetItem = ({ tweet }) => {
                   justify='space-between'
                   className={classes.likeShareContainer}>
                   <Grid item>
-                    {tweet.likes.length > 0 ? tweet.likes.length : null}
                     <IconButton
                       aria-label='like'
                       className={classes.like}
                       onClick={() => setLike(tweet._id)}>
                       {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                     </IconButton>
+                    {tweet.likes.length > 0 ? (
+                      <Typography variant='button' className={classes.like}>
+                        {tweet.likes.length}
+                      </Typography>
+                    ) : null}
                   </Grid>
                   <Grid item>
                     <IconButton
                       aria-label='retweet'
                       className={classes.retweet}
-                      onClick={() => setRetweet((prevState) => !prevState)}>
+                      onClick={() => share(tweet._id)}>
                       {retweet ? <RepeatOneIcon /> : <RepeatIcon />}
                     </IconButton>
+                    {tweet.retweets.length > 0 ? (
+                      <Typography variant='button' className={classes.retweet}>
+                        {tweet.retweets.length}
+                      </Typography>
+                    ) : null}
                   </Grid>
                   <Grid item>
                     <IconButton
