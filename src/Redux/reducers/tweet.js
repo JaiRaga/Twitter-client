@@ -6,7 +6,8 @@ import {
   CLEAR_TWEETS,
   POST_TWEET,
   DELETE_TWEET,
-  UPDATE_LIKES
+  UPDATE_LIKES,
+  RETWEET
 } from "../actions/types";
 
 const initialState = {
@@ -59,7 +60,18 @@ export default (state = initialState, action) => {
         ...state,
         tweets: state.tweets.map((tweet) =>
           tweet._id === payload.tweetId
-            ? { ...tweet, likes: [payload.likes] }
+            ? { ...tweet, likes: [...payload.likes] }
+            : tweet
+        ),
+        loading: false
+      };
+
+    case RETWEET:
+      return {
+        ...state,
+        tweets: state.tweets.map((tweet) =>
+          tweet._id === payload.id
+            ? { ...tweet, retweets: [...payload.retweets] }
             : tweet
         ),
         loading: false
