@@ -9,7 +9,9 @@ import {
   CLEAR_TWEETS,
   DELETE_TWEET,
   UPDATE_LIKES,
-  LIKE_ERROR
+  RETWEET,
+  LIKE_ERROR,
+  SHARE_ERROR
 } from "./types";
 
 // Get all tweets on dashboard
@@ -84,11 +86,38 @@ export const addLike = (tweetId) => async (dispatch) => {
 };
 
 // Remove Like
+export const removeLike = (tweetId) => async (dispatch) => {
+  try {
+    const res = await axios.patch(`/api/unlike/${tweetId}`);
+    console.log(res.data);
+    dispatch({ type: UPDATE_LIKES, payload: { tweetId, likes: res.data } });
+  } catch (err) {
+    dispatch({ type: LIKE_ERROR });
+  }
+};
 
 // Add Comment
 
 // Remove Comment
 
 // Share Tweet
+export const reTweet = (id) => async (dispatch) => {
+  try {
+    const res = await axios.patch(`/api/retweet/${id}`);
+    console.log(res.data);
+    dispatch({ type: RETWEET, payload: { id, retweets: res.data } });
+  } catch (err) {
+    dispatch({ type: SHARE_ERROR });
+  }
+};
 
 // UnShare Tweet
+export const deTweet = (id) => async (dispatch) => {
+  try {
+    const res = await axios.patch(`/api/detweet/${id}`);
+    console.log(res.data);
+    dispatch({ type: RETWEET, payload: { id, retweets: res.data } });
+  } catch (err) {
+    dispatch({ type: SHARE_ERROR });
+  }
+};
