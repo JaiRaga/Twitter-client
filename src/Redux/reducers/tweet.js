@@ -7,7 +7,9 @@ import {
   POST_TWEET,
   DELETE_TWEET,
   UPDATE_LIKES,
-  RETWEET
+  RETWEET,
+  UPDATE_COMMENTS,
+  POST_COMMENT
 } from "../actions/types";
 
 const initialState = {
@@ -76,6 +78,28 @@ export default (state = initialState, action) => {
         ),
         loading: false
       };
+
+    case UPDATE_COMMENTS:
+      return {
+        ...state,
+        tweets: state.tweets.map((tweet) =>
+          tweet._id === payload.id
+            ? { ...tweet, comments: [...payload.comments] }
+            : tweet
+        ),
+        loading: false
+      };
+
+    // case POST_COMMENT:
+    //   return {
+    //     ...state,
+    //     tweets: state.tweets.map((tweet) =>
+    //       tweet._id === payload.id
+    //         ? { ...tweet, comments: [...payload.comment] }
+    //         : tweet
+    //     ),
+    //     loading: false
+    //   };
 
     default:
       return state;
