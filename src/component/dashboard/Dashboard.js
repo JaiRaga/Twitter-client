@@ -21,7 +21,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getAllTweets());
-  }, [tweets]);
+    console.log("dash");
+  }, [loading]);
 
   // console.log(tweet);
 
