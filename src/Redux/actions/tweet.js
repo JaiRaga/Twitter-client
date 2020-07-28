@@ -10,9 +10,13 @@ import {
   DELETE_TWEET,
   UPDATE_LIKES,
   RETWEET,
+  UPDATE_COMMENTS,
+  COMMENT_ERROR,
   LIKE_ERROR,
-  SHARE_ERROR
+  SHARE_ERROR,
+  POST_COMMENT
 } from "./types";
+import { useDispatch } from "react-redux";
 
 // Get all tweets on dashboard
 export const getAllTweets = () => async (dispatch) => {
@@ -96,7 +100,36 @@ export const removeLike = (tweetId) => async (dispatch) => {
   }
 };
 
+// Get Comment
+
+export const getComments = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/comments/${id}`);
+    console.log(res.data);
+    dispatch({ type: UPDATE_COMMENTS, payload: { id, comments: res.data } });
+  } catch (err) {
+    dispatch({ type: COMMENT_ERROR });
+  }
+};
+
 // Add Comment
+export const postComment = (id, comment) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify({ text: comment });
+
+  try {
+    await axios.post(`/api/comments/${id}`, body, config);
+
+    dispatch(getComments(id));
+  } catch (err) {
+    dispatch({ type: COMMENT_ERROR });
+  }
+};
 
 // Remove Comment
 
