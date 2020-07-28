@@ -1,4 +1,6 @@
+import React from "react";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -7,9 +9,11 @@ import {
   LOGOUT,
   USER_LOADED,
   CLEAR_PROFILE,
+  CLEAR_TWEETS,
   AUTH_ERROR
 } from "./types";
 import setAuthToken from "../../utils/setAuthToken";
+import { useSelector } from "react-redux";
 
 // Load User
 export const loadUser = () => async (dispatch) => {
@@ -74,5 +78,6 @@ export const login = (email, password) => async (dispatch) => {
 // Logout user
 export const logout = () => async (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
+  dispatch({ type: CLEAR_TWEETS });
   dispatch({ type: LOGOUT });
 };
