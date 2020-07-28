@@ -7,6 +7,7 @@ import {
   Divider,
   Paper,
   Typography,
+  Button,
   Tooltip
 } from "@material-ui/core";
 import moment from "moment-twitter";
@@ -20,14 +21,15 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useSelector, useDispatch } from "react-redux";
 import { RingLoader } from "react-spinners";
 import profilePic from "../../img/raga.jpg";
-import { getUserById } from "../../Redux/actions/profile";
 import {
   addLike,
   removeLike,
   reTweet,
-  deTweet
+  deTweet,
+  getComments
 } from "../../Redux/actions/tweet";
 import Comment from "../comments/Comment";
+import PostComment from "../comments/PostComment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,21 +81,31 @@ const useStyles = makeStyles((theme) => ({
   expand: {
     marginLeft: "auto",
     marginBottom: 20
+  },
+  commentDisplay: {
+    marginBottom: 15
   }
 }));
 
 const TweetItem = ({ tweet }) => {
+  const dispatch = useDispatch();
+
+  // Fetches Comments
+  useEffect(() => {
+    dispatch(getComments(tweet._id));
+  }, []);
+
   const classes = useStyles();
   const loading = useSelector((state) => state.tweet.loading);
   const authUser = useSelector((state) => state.auth.user);
+  const comments = tweet.comments;
   const user = tweet.owner;
 
   const [liked, setLiked] = useState(!!tweet.likes.length);
   const [retweet, setRetweet] = useState(!!tweet.retweets.length);
   const [comment, setComment] = useState(false);
+  const [commentToggle, setCommentToggle] = useState(false);
   const [title, setTitle] = useState("Edit");
-
-  const dispatch = useDispatch();
 
   const setLike = (id) => {
     let likes = tweet.likes.map((like) => like._id === id);
@@ -117,6 +129,11 @@ const TweetItem = ({ tweet }) => {
       setRetweet(false);
       dispatch(deTweet(id));
     }
+  };
+
+  // Toggles comment display
+  const toggleCommentHandler = () => {
+    commentToggle ? setCommentToggle(false) : setCommentToggle(true);
   };
 
   return (
@@ -199,6 +216,7 @@ const TweetItem = ({ tweet }) => {
                     ) : null}
                   </Grid>
                   <Grid item>
+                    314
                     <IconButton
                       aria-label='comment'
                       className={classes.comment}
@@ -212,7 +230,20 @@ const TweetItem = ({ tweet }) => {
           </Grid>
         )}
       </Paper>
-      <Comment />
+
+      {comment ? <PostComment id={tweet._id} /> : null}
+
+      <Button
+        fullWidth
+        color='primary'
+        onClick={toggleCommentHandler}
+        className={classes.commentDisplay}>
+        {comments.length > 1
+          ? comments.length - 1 + "+ comments"
+          : comments.length + " comment"}
+      </Button>
+
+      {commentToggle ? <Comment comments={comments} /> : null}
     </Fragment>
   );
 };
