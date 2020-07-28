@@ -19,6 +19,7 @@ import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
 import { Link, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../Redux/actions/auth";
+import SideProfile from "../profile/SideProfile";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -47,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
   },
   hamburger: {
     color: "white"
+  },
+  title: {
+    fontWeight: "800",
+    padding: "5px 16px"
   }
 }));
 
@@ -71,13 +76,18 @@ export default function SwipeableTemporaryDrawer() {
 
   const authLinks = (
     <Fragment>
+      <Typography className={classes.title} color='primary' variant='body1'>
+        Account Info
+      </Typography>
+      <Divider />
       <List className={classes.list}>
-        <Link to='/dashboard' className={classes.link}>
+        <Link to='/profile' className={classes.link}>
           <ListItem button>
-            <ListItemIcon className={classes.icons}>
+            {/* <ListItemIcon className={classes.icons}>
               <TwitterIcon />
-            </ListItemIcon>
-            <ListItemText primary='Twitter' />
+            </ListItemIcon> */}
+            <SideProfile />
+            {/* <ListItemText primary='Twitter' /> */}
           </ListItem>
         </Link>
       </List>
