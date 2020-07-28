@@ -3,6 +3,7 @@ import { Grid, Avatar, makeStyles, Button } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { PacmanLoader } from "react-spinners";
 import profilePic from "../../img/raga.jpg";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,19 +21,27 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(20)
   },
   back: {
-    background: "#556cd6",
     padding: 10
   },
-  centerText: {
-    margin: 9,
-    padding: 3
+  padding: {
+    paddingLeft: 10
   },
   loadingSpinner: {
     margin: 15,
     padding: 15
   },
   follow: {
-    margin: 1
+    marginTop: 25
+  },
+  username: {
+    fontWeight: "700",
+    fontSize: "24px",
+    margin: 0,
+    padding: 0
+  },
+  handle: {
+    margin: 0,
+    padding: 0
   }
 }));
 
@@ -40,6 +49,7 @@ const Profile = () => {
   const classes = useStyles();
   const loading = useSelector((state) => state.auth.loading);
   const user = useSelector((state) => state.auth.user);
+  const history = useHistory();
 
   return (
     <Grid container item>
@@ -53,28 +63,56 @@ const Profile = () => {
         </Grid>
       ) : (
         <Grid container direction='column' item className={classes.back}>
-          <Grid item>
-            <div className={classes.root}>
-              <Avatar
-                alt={user.username}
-                src={profilePic}
-                className={classes.large}></Avatar>
-            </div>
-            <Button variant='outlined'>Edit Profile</Button>
+          <Grid container alignItems='center' item>
+            <Grid item>
+              <div className={classes.root}>
+                <Avatar
+                  alt={user.username}
+                  src={profilePic}
+                  className={classes.large}></Avatar>
+              </div>
+            </Grid>
+            <Grid item>
+              <Grid
+                container
+                direction='column'
+                className={classes.padding}
+                item>
+                <Grid className={classes.username} item>
+                  {user.username}
+                </Grid>
+                <Grid className={classes.handle} item>
+                  @{user.handle}
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Button
+              variant='contained'
+              color='primary'
+              fullWidth
+              onClick={() => history.push("/setting")}>
+              Edit Profile
+            </Button>
           </Grid>
-          <Grid container direction='column'>
-            <Grid className={classes.centerText} item>
-              {user.username}
-            </Grid>
-            <Grid className={classes.centerText} item>
-              @{user.handle}
-            </Grid>
-            <Grid className={classes.centerText} item>
+          <Grid container direction='column' alignItems='center'>
+            <Grid className={classes.padding} item>
               {user.caption}
             </Grid>
-            <Grid container className={classes.follow} spacing={2} item>
-              <Grid item>{user.following.length} Following</Grid>
-              <Grid item>{user.followers.length} Followers</Grid>
+            <Grid
+              container
+              justify='space-evenly'
+              className={classes.follow}
+              item>
+              {user.following.length}
+              <Button color='primary' fullWidth>
+                Following
+              </Button>
+
+              {user.followers.length}
+              <Button color='primary' fullWidth>
+                Followers
+              </Button>
             </Grid>
           </Grid>
         </Grid>
