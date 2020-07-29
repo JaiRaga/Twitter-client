@@ -28,8 +28,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CommentItem = () => {
+const CommentItem = ({ comment }) => {
   const classes = useStyles();
+  const { username, handle, text, owner } = comment;
 
   return (
     <Paper elevation={3} className={classes.spacing}>
@@ -39,8 +40,8 @@ const CommentItem = () => {
         </Grid>
         <Grid item className={classes.items}>
           <Grid container item direction='column'>
-            <Grid item>Name</Grid>
-            <Grid item>handle</Grid>
+            <Grid item>{username}</Grid>
+            <Grid item>{handle}</Grid>
           </Grid>
         </Grid>
         <Grid item>time</Grid>
@@ -48,8 +49,7 @@ const CommentItem = () => {
 
         <Grid item className={classes.items}>
           <Grid container item>
-            Lorem ipsum, dolor sit amet consectetur adipisicing. Lorem ipsum
-            dolor sit amet consectetur adipisicing elit. Veritatis, molestias.
+            {text}
           </Grid>
         </Grid>
       </Grid>
