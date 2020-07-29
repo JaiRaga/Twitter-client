@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   if (isAuthenticated) {
-    return <Redirect to='/landing' />;
+    return <Redirect to='/dashboard' />;
   }
 
   return (
