@@ -105,12 +105,18 @@ const Profile = () => {
               className={classes.follow}
               item>
               {user.following.length}
-              <Button color='primary' fullWidth>
+              <Button
+                color='primary'
+                fullWidth
+                onClick={() => history.push("/following")}>
                 Following
               </Button>
 
               {user.followers.length}
-              <Button color='primary' fullWidth>
+              <Button
+                color='primary'
+                fullWidth
+                onClick={() => history.push("/followers")}>
                 Followers
               </Button>
             </Grid>
