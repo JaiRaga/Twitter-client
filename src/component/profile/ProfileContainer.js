@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect } from "react";
 import { Grid } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { CircleLoader } from "react-spinners";
 import Profile from "./Profile";
-import UserTweets from "../tweets/UserTweets";
-import { CLEAR_TWEETS } from "../../Redux/actions/types";
+import { getTweetsByMe, clearTweets } from "../../Redux/actions/tweet";
+import Tweets from "../tweets/Tweets";
 
 const style = (theme) => ({
   Grid: {
@@ -13,7 +14,18 @@ const style = (theme) => ({
 
 const ProfileContainer = () => {
   const dispatch = useDispatch();
-  dispatch({ type: CLEAR_TWEETS });
+  useEffect(() => {
+    dispatch(getTweetsByMe());
+
+    return () => {
+      dispatch(clearTweets());
+      // dispatch(getAllTweets());
+    };
+  }, []);
+
+  const tweet = useSelector((state) => state.tweet);
+  const { loading, tweets } = tweet;
+
   return (
     <Grid
       container
@@ -32,7 +44,13 @@ const ProfileContainer = () => {
         alignItems='center'
         spacing={4}>
         <Profile />
-        <UserTweets />
+        <Grid container item>
+          {loading && !tweets ? (
+            <CircleLoader loading />
+          ) : (
+            <Tweets tweets={tweets} />
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );
