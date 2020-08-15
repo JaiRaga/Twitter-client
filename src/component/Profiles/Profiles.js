@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 import ProfileItem from "./ProfileItem";
 import { Grid, Typography, IconButton, Button } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { SyncLoader } from "react-spinners";
 import Followers from "./Followers";
@@ -9,37 +10,41 @@ import Following from "./Following";
 
 const style = {
   Layout: {
-    marginLeft: 27
+    marginLeft: 7
   },
   Spinner: {
     margin: "10%"
   }
 };
 
-const Profiles = () => {
+const Profiles = ({ profiles }) => {
+  const history = useHistory();
   const loading = useSelector((state) => state.auth.loading);
   const user = useSelector((state) => state.auth.user);
   return (
     <Grid container>
       <Grid item style={style.Layout}>
-        <IconButton aria-label='back-button' color='secondary'>
+        <IconButton
+          aria-label='back-button'
+          color='secondary'
+          onClick={() => history.push("/profile")}>
           <ArrowBackIcon />
         </IconButton>
       </Grid>
       <Grid item>
         <Grid container item direction='column' style={style.Layout}>
           <Grid item>
-            <Typography variant='h5'>username</Typography>
+            <Typography variant='h5'>{user.username}</Typography>
           </Grid>
           <Grid item>
-            <Typography variant='caption'>@handle</Typography>
+            <Typography variant='caption'>@{user.handle}</Typography>
           </Grid>
         </Grid>
       </Grid>
       <Grid container item direction='column'>
         <Grid container item justify='space-evenly'>
-          <Followers />
-          <Following />
+          <Button onClick={() => history.push("/followers")}>Followers</Button>
+          <Button onClick={() => history.push("/following")}>Following</Button>
         </Grid>
         <Grid container item justify='center'>
           {loading || user === null ? (
@@ -47,13 +52,13 @@ const Profiles = () => {
               <SyncLoader loading size={15} color='#36D7B7' />
             </Grid>
           ) : (
-            <Fragment>
-              <ProfileItem user={user} />
-              <ProfileItem user={user} />
-              <ProfileItem user={user} />
-              <ProfileItem user={user} />
-              <ProfileItem user={user} />
-            </Fragment>
+            <Grid item>
+              {profiles.length !== 0 ? (
+                profiles.map((profile) => <ProfileItem user={profile} />)
+              ) : (
+                <Typography variant='h5'>No Users..</Typography>
+              )}
+            </Grid>
           )}
         </Grid>
       </Grid>
