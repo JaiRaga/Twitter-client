@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { useSelector, useDispatch } from "react-redux";
-import { CircleLoader } from "react-spinners";
 import Tweets from "../tweets/Tweets";
 import Tweet from "../tweet/Tweet";
 import { getAllTweets, clearTweets } from "../../Redux/actions/tweet";
@@ -26,6 +25,10 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(getAllTweets());
     console.log("dash");
+
+    return () => {
+      dispatch(clearTweets());
+    };
   }, []);
 
   return (
