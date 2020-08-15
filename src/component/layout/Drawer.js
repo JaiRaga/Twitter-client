@@ -23,7 +23,7 @@ import SideProfile from "../profile/SideProfile";
 
 const useStyles = makeStyles((theme) => ({
   list: {
-    width: 250
+    width: 300
   },
   display: {
     [theme.breakpoints.down("md")]: {
