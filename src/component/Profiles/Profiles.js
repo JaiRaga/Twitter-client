@@ -5,8 +5,6 @@ import { Grid, Typography, IconButton, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { SyncLoader } from "react-spinners";
-import Followers from "./Followers";
-import Following from "./Following";
 
 const style = {
   Layout: {
@@ -19,8 +17,9 @@ const style = {
 
 const Profiles = ({ profiles }) => {
   const history = useHistory();
-  const loading = useSelector((state) => state.auth.loading);
+  const loading = useSelector((state) => state.profile.loading);
   const user = useSelector((state) => state.auth.user);
+
   return (
     <Grid container>
       <Grid item style={style.Layout}>
@@ -47,9 +46,9 @@ const Profiles = ({ profiles }) => {
           <Button onClick={() => history.push("/following")}>Following</Button>
         </Grid>
         <Grid container item justify='center'>
-          {loading || user === null ? (
+          {loading ? (
             <Grid item style={style.Spinner}>
-              <SyncLoader loading size={15} color='#36D7B7' />
+              <SyncLoader loading size={15} color='#1976d2' />
             </Grid>
           ) : (
             <Grid item>
