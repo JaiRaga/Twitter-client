@@ -4,7 +4,12 @@ import { Skeleton } from "@material-ui/lab";
 import { useSelector, useDispatch } from "react-redux";
 import Tweets from "../tweets/Tweets";
 import Tweet from "../tweet/Tweet";
-import { getAllTweets, clearTweets } from "../../Redux/actions/tweet";
+import {
+  getAllTweets,
+  clearTweets,
+  getTweetsByMe
+} from "../../Redux/actions/tweet";
+import { getFollowers, getFollowing } from "../../Redux/actions/profile";
 
 const style = {
   Margin: {
@@ -24,6 +29,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getAllTweets());
+    dispatch(getFollowers());
+    dispatch(getFollowing());
     console.log("dash");
 
     return () => {
