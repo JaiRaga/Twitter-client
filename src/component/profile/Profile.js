@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Avatar, makeStyles, Button } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { PacmanLoader } from "react-spinners";
 import profilePic from "../../img/raga.jpg";
 import { useHistory } from "react-router-dom";
+import { getFollowers, getFollowing } from "../../Redux/actions/profile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +51,12 @@ const Profile = () => {
   const loading = useSelector((state) => state.auth.loading);
   const user = useSelector((state) => state.auth.user);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getFollowers());
+    dispatch(getFollowing());
+  }, []);
 
   return (
     <Grid container item>
