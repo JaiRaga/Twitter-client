@@ -44,9 +44,9 @@ const ProfileContainer = () => {
         alignItems='center'
         spacing={4}>
         <Profile />
-        <Grid container item>
-          {loading && !tweets ? (
-            <CircleLoader loading />
+        <Grid container item justify='center'>
+          {loading || !tweets ? (
+            <CircleLoader loading color='#1976d2' />
           ) : (
             <Tweets tweets={tweets} />
           )}
