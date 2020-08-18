@@ -24,6 +24,10 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0"
   },
+  "engines": {
+    "node": "12.9.1",
+    "npm": "6.13.2"
+  },
   "scripts": {
     "start": "react-scripts start",
     "predeploy": "npm run build",
