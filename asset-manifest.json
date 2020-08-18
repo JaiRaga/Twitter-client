@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Twitter-client/static/css/main.acfa2fab.chunk.css",
+    "main.js": "/Twitter-client/static/js/main.c09711aa.chunk.js",
+    "main.js.map": "/Twitter-client/static/js/main.c09711aa.chunk.js.map",
+    "runtime-main.js": "/Twitter-client/static/js/runtime-main.30e99ab3.js",
+    "runtime-main.js.map": "/Twitter-client/static/js/runtime-main.30e99ab3.js.map",
+    "static/js/2.66e1d1a5.chunk.js": "/Twitter-client/static/js/2.66e1d1a5.chunk.js",
+    "static/js/2.66e1d1a5.chunk.js.map": "/Twitter-client/static/js/2.66e1d1a5.chunk.js.map",
+    "index.html": "/Twitter-client/index.html",
+    "precache-manifest.bcc5a129004af5878ba7c581f9e61888.js": "/Twitter-client/precache-manifest.bcc5a129004af5878ba7c581f9e61888.js",
+    "service-worker.js": "/Twitter-client/service-worker.js",
+    "static/css/main.acfa2fab.chunk.css.map": "/Twitter-client/static/css/main.acfa2fab.chunk.css.map",
+    "static/js/2.66e1d1a5.chunk.js.LICENSE.txt": "/Twitter-client/static/js/2.66e1d1a5.chunk.js.LICENSE.txt",
+    "static/media/raga.jpg": "/Twitter-client/static/media/raga.67a6b642.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.30e99ab3.js",
+    "static/js/2.66e1d1a5.chunk.js",
+    "static/css/main.acfa2fab.chunk.css",
+    "static/js/main.c09711aa.chunk.js"
+  ]
+}
