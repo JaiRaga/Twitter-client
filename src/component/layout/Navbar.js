@@ -18,6 +18,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import HomeIcon from "@material-ui/icons/Home";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import AdjustIcon from "@material-ui/icons/Adjust";
 import { Link, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../Redux/actions/auth";
@@ -81,6 +82,15 @@ const Navbar = () => {
               <PersonPinIcon />
             </ListItemIcon>
             <ListItemText primary='Profile' />
+          </ListItem>
+        </Link>
+
+        <Link to='/setting' className={classes.link}>
+          <ListItem button>
+            <ListItemIcon className={classes.icons}>
+              <AdjustIcon />
+            </ListItemIcon>
+            <ListItemText primary='Setting' />
           </ListItem>
         </Link>
 
