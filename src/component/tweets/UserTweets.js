@@ -3,17 +3,26 @@ import { Grid, Divider } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { CircleLoader } from "react-spinners";
 import UserTweetItem from "./UserTweetItem";
-import { getTweetsByMe } from "../../Redux/actions/tweet";
+import {
+  getTweetsByMe,
+  clearTweets,
+  getAllTweets
+} from "../../Redux/actions/tweet";
 
 const UserTweets = () => {
+  const tweet = useSelector((state) => state.tweet);
+  const { loading, tweets } = tweet;
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTweetsByMe());
+
+    return () => {
+      dispatch(clearTweets());
+      // dispatch(getAllTweets());
+    };
   }, []);
 
-  const tweet = useSelector((state) => state.tweet);
-  const { loading, tweets } = tweet;
-  // console.log(loading, tweets);
   return (
     <Grid container item>
       {loading && !tweets ? (

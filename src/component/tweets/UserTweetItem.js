@@ -8,6 +8,7 @@ import {
   Paper,
   Typography
 } from "@material-ui/core";
+import moment from "moment-twitter";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import CommentIcon from "@material-ui/icons/Comment";
@@ -71,6 +72,27 @@ const UserTweetItem = ({ tweet }) => {
   const user = useSelector((state) => state.auth.user);
   // const user = useSelector((state) => state.profile.profile);
 
+  const parseDate = () => {
+    let t = tweet.createdAt;
+    t = new Date(t);
+
+    let copyT = String(t);
+    copyT = copyT.split(" ");
+
+    t = Date.parse(t);
+    t = Date.now() - t;
+
+    let d = moment(moment() + t)
+      .twitterShort()
+      .split("");
+
+    return d.slice(-1)[0] === "m" ||
+      d.slice(-1)[0] === "s" ||
+      (d[1] === "d" && d[0] <= 6)
+      ? moment(moment() + t).twitterShort()
+      : copyT[2] + " " + copyT[1];
+  };
+
   return (
     <Fragment>
       <Paper elevation={3} className={classes.paper}>
@@ -101,7 +123,7 @@ const UserTweetItem = ({ tweet }) => {
                     <Typography variant='caption'>@{user.handle}</Typography>
                   </Grid>
                   <Grid item className={classes.marginTop}>
-                    <Typography variant='caption'>{user.createdAt}</Typography>
+                    <Typography variant='caption'>{parseDate()}</Typography>
                   </Grid>
                 </Grid>
                 <Divider />

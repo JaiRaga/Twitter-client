@@ -10,7 +10,6 @@ import {
   Button,
   Tooltip
 } from "@material-ui/core";
-import moment from "moment-twitter";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import RepeatIcon from "@material-ui/icons/Repeat";
@@ -30,6 +29,7 @@ import {
 } from "../../Redux/actions/tweet";
 import Comment from "../comments/Comment";
 import PostComment from "../comments/PostComment";
+import parseDate from "../utils/parseDate";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: "100%"
   },
-  large: {
-    width: theme.spacing(7),
-    height: theme.spacing(7)
+  small: {
+    width: theme.spacing(4),
+    height: theme.spacing(4)
   },
   margin: {
     margin: theme.spacing(1)
@@ -50,6 +50,12 @@ const useStyles = makeStyles((theme) => ({
   likeShareContainer: {
     marginTop: 10
     // maxWidth: "100%",
+  },
+  username: {
+    fontWeight: "700"
+  },
+  handle: {
+    // fontWeight: "100"
   },
   like: {
     color: "#fa1616",
@@ -89,11 +95,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TweetItem = ({ tweet }) => {
   const dispatch = useDispatch();
-
-  // Fetches Comments
-  useEffect(() => {
-    dispatch(getComments(tweet._id));
-  }, []);
 
   const classes = useStyles();
   const loading = useSelector((state) => state.tweet.loading);
@@ -154,31 +155,33 @@ const TweetItem = ({ tweet }) => {
             <Grid item className={classes.root}>
               <Avatar
                 alt={user.username}
-                src={profilePic}
-                className={classes.large}
+                src={user.avatar}
+                className={classes.small}
               />
               <Grid container item direction='column'>
                 <Grid container item spacing={1}>
                   <Grid item>
-                    <Typography variant='h5'>{user.username}</Typography>
+                    <Typography variant='h5' className={classes.username}>
+                      {user.username}
+                    </Typography>
                   </Grid>
                   <Grid item className={classes.marginTop}>
-                    <Typography variant='caption'>@{user.handle}</Typography>
+                    <Typography variant='body1' className={classes.handle}>
+                      @{user.handle}
+                    </Typography>
                   </Grid>
                   <Grid item className={classes.marginTop}>
                     <Typography variant='caption'>
-                      {moment(
-                        moment() + 36e5 * new Date(tweet.createdAt).getHours()
-                      ).twitterLong()}
+                      {parseDate(tweet.createdAt)}
                     </Typography>
                   </Grid>
-                  <Grid item className={classes.expand}>
+                  {/* <Grid item className={classes.expand}>
                     <Tooltip title={title}>
                       <IconButton aria-label='expand-more'>
                         <ExpandMoreIcon />
                       </IconButton>
                     </Tooltip>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
                 <Divider />
                 <Grid item className={classes.tweet}>
@@ -216,7 +219,11 @@ const TweetItem = ({ tweet }) => {
                     ) : null}
                   </Grid>
                   <Grid item>
-                    314
+                    {tweet.retweets.length > 0 ? (
+                      <Typography variant='button' className={classes.comment}>
+                        {comments.length}
+                      </Typography>
+                    ) : null}
                     <IconButton
                       aria-label='comment'
                       className={classes.comment}
@@ -235,10 +242,13 @@ const TweetItem = ({ tweet }) => {
 
       <Button
         fullWidth
+        disabled={comments.length === 0}
         color='primary'
         onClick={toggleCommentHandler}
         className={classes.commentDisplay}>
-        {comments.length > 1
+        {commentToggle
+          ? "Hide Comments"
+          : comments.length > 1
           ? comments.length - 1 + "+ comments"
           : comments.length + " comment"}
       </Button>

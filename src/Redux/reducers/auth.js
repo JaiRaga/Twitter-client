@@ -6,6 +6,7 @@ import {
   LOGOUT,
   USER_LOADED,
   CLEAR_PROFILE,
+  UPDATE_PROFILE,
   AUTH_ERROR
 } from "../actions/types";
 
@@ -26,6 +27,11 @@ export default (state = initialState, action) => {
         user: payload,
         isAuthenticated: true,
         loading: false
+      };
+
+    case UPDATE_PROFILE:
+      return {
+        ...state
       };
 
     case REGISTER_SUCCESS:

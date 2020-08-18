@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, Divider } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+
 import TweetItem from "./TweetItem";
 
 const Tweets = ({ tweets }) => {

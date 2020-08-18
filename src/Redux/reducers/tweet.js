@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         tweets: [],
-        loading: false
+        loading: true
       };
 
     case UPDATE_LIKES:

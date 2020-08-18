@@ -1,6 +1,14 @@
 import React from "react";
-import { Grid, makeStyles, Paper, Avatar, Divider } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  Paper,
+  Avatar,
+  Divider,
+  Typography
+} from "@material-ui/core";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
+import parseDate from "../utils/parseDate";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,12 +33,16 @@ const useStyles = makeStyles((theme) => ({
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500]
+  },
+  username: {
+    fontWeight: "700"
   }
 }));
 
 const CommentItem = ({ comment }) => {
   const classes = useStyles();
-  const { username, handle, text, owner } = comment;
+  const { username, handle } = comment.user;
+  const { text, date } = comment;
 
   return (
     <Paper elevation={3} className={classes.spacing}>
@@ -40,11 +52,17 @@ const CommentItem = ({ comment }) => {
         </Grid>
         <Grid item className={classes.items}>
           <Grid container item direction='column'>
-            <Grid item>{username}</Grid>
-            <Grid item>{handle}</Grid>
+            <Grid item>
+              <Typography variant='subtitle1' className={classes.username}>
+                {username}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant='caption'>@{handle}</Typography>
+            </Grid>
           </Grid>
         </Grid>
-        <Grid item>time</Grid>
+        <Grid item>{parseDate(date)}</Grid>
         {/* <Divider orientation='vertical' /> */}
 
         <Grid item className={classes.items}>

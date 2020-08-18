@@ -21,8 +21,9 @@ import { useDispatch } from "react-redux";
 // Get all tweets on dashboard
 export const getAllTweets = () => async (dispatch) => {
   try {
+    // dispatch(clearTweets());
     const res = await axios.get("/api/tweets");
-
+    console.log("Public");
     dispatch({
       type: GET_TWEETS,
       payload: res.data
@@ -32,11 +33,21 @@ export const getAllTweets = () => async (dispatch) => {
   }
 };
 
+// Clear all Tweets
+export const clearTweets = () => async (dispatch) => {
+  try {
+    console.log("clear");
+    dispatch({ type: CLEAR_TWEETS });
+  } catch (err) {
+    dispatch({ type: TWEET_ERROR });
+  }
+};
+
 // Get tweets by me
 export const getTweetsByMe = () => async (dispatch) => {
   try {
     const res = await axios.get("/api/tweets/me");
-    // console.log(res);
+    console.log("Me");
     dispatch({
       type: GET_TWEETS,
       payload: res.data
@@ -100,18 +111,6 @@ export const removeLike = (tweetId) => async (dispatch) => {
   }
 };
 
-// Get Comment
-
-export const getComments = (id) => async (dispatch) => {
-  try {
-    const res = await axios.get(`/api/comments/${id}`);
-    console.log(res.data);
-    dispatch({ type: UPDATE_COMMENTS, payload: { id, comments: res.data } });
-  } catch (err) {
-    dispatch({ type: COMMENT_ERROR });
-  }
-};
-
 // Add Comment
 export const postComment = (id, comment) => async (dispatch) => {
   const config = {
@@ -123,9 +122,9 @@ export const postComment = (id, comment) => async (dispatch) => {
   const body = JSON.stringify({ text: comment });
 
   try {
-    await axios.post(`/api/comments/${id}`, body, config);
-
-    dispatch(getComments(id));
+    const res = await axios.post(`/api/comment/${id}`, body, config);
+    dispatch({ type: UPDATE_COMMENTS, payload: { id, comments: res.data } });
+    // dispatch(getComments(id));
   } catch (err) {
     dispatch({ type: COMMENT_ERROR });
   }

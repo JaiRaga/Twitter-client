@@ -9,8 +9,10 @@ import {
   LOGOUT,
   USER_LOADED,
   CLEAR_PROFILE,
+  UPDATE_PROFILE,
   CLEAR_TWEETS,
-  AUTH_ERROR
+  AUTH_ERROR,
+  PROFILE_ERROR
 } from "./types";
 import setAuthToken from "../../utils/setAuthToken";
 import { useSelector } from "react-redux";
@@ -80,4 +82,22 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: CLEAR_TWEETS });
   dispatch({ type: LOGOUT });
+};
+
+// Update User Profile
+export const updateProfile = (formData) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify({ ...formData });
+  try {
+    const res = await axios.patch("/api/user", body, config);
+    console.log(res.data);
+    dispatch({ type: UPDATE_PROFILE, payload: res.data });
+  } catch (err) {
+    dispatch({ type: PROFILE_ERROR });
+  }
 };

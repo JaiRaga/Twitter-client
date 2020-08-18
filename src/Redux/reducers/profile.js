@@ -1,8 +1,16 @@
-import { GET_PROFILE, CLEAR_PROFILE } from "../actions/types";
+import {
+  GET_PROFILE,
+  CLEAR_PROFILE,
+  UPDATE_PROFILE,
+  GET_FOLLOWERS,
+  GET_FOLLOWING,
+  UPDATE_FOLLOWING
+} from "../actions/types";
 
 const initialState = {
   profile: null,
-  profiles: [],
+  followers: [],
+  following: [],
   loading: true,
   error: {}
 };
@@ -11,10 +19,17 @@ export default (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_PROFILE:
+    case GET_FOLLOWERS:
       return {
         ...state,
-        profile: payload,
+        followers: [...payload],
+        loading: false
+      };
+
+    case GET_FOLLOWING:
+      return {
+        ...state,
+        following: [...payload],
         loading: false
       };
 
